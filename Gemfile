@@ -30,7 +30,7 @@ gem "jbuilder"
 gem "devise"
 
 # Styling
-gem "tailwindcss-rails"
+gem "tailwindcss-rails", "~> 3.3.1"
 
 # Background Jobs
 gem "sidekiq"
