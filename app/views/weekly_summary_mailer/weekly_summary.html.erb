@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Your Weekly Habit Summary</h1>
+    <p>Hello <%= @user.name || @user.email %>,</p>
+
+    <p>Here's your habit summary for <%= @start_date.strftime('%B %d') %> to <%= @end_date.strftime('%B %d') %>:</p>
+
+    <% @habits.each do |habit| %>
+      <div style="margin: 20px 0; padding: 15px; border: 1px solid #e5e7eb; border-radius: 8px;">
+        <h2 style="color: #4f46e5; margin: 0 0 10px 0;"><%= habit.name %></h2>
+
+        <% checkins = habit.habit_checkins.where(date: @start_date..@end_date) %>
+        <% completion_rate = (checkins.count.to_f / 7 * 100).round %>
+
+        <p style="margin: 5px 0;">
+          <strong>Completion Rate:</strong> <%= completion_rate %>%
+        </p>
+
+        <p style="margin: 5px 0;">
+          <strong>Days Completed:</strong> <%= checkins.count %> of 7
+        </p>
+
+        <% if checkins.any? %>
+          <p style="margin: 5px 0;">
+            <strong>Completed on:</strong> <%= checkins.map { |c| c.date.strftime('%a, %b %d') }.join(', ') %>
+          </p>
+        <% else %>
+          <p style="margin: 5px 0; color: #6b7280;">
+            No check-ins recorded for this week.
+          </p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <p>Keep up the good work! Remember, consistency is key to building lasting habits.</p>
+
+    <p>Best regards,<br>Your Habit Tracker</p>
+  </body>
+</html>

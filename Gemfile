@@ -34,9 +34,12 @@ gem "tailwindcss-rails", "~> 3.3.1"
 
 # Background Jobs
 gem "sidekiq"
+gem "redis"
+gem "sidekiq-scheduler"
 
 # Email
 gem "letter_opener", group: :development
+gem "letter_opener_web", group: :development
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]

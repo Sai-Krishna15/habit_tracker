@@ -3,9 +3,11 @@ class Habit < ApplicationRecord
   has_many :habit_checkins, dependent: :destroy
 
   validates :name, presence: true, length: { minimum: 2, maximum: 100 }
-  validates :description, length: { maximum: 500 }
+  validates :description, presence: true, length: { minimum: 10, maximum: 500 }
 
   def current_streak
+    return 0 if habit_checkins.empty?
+
     streak = 0
     current_date = Date.today
 
@@ -46,8 +48,7 @@ class Habit < ApplicationRecord
     completed_days = habit_checkins.count
 
     # Calculate percentage: (completed days / total days) * 100
-    # Round to 1 decimal place for cleaner display
-    ((completed_days.to_f / total_days) * 100).round(1)
+    ((completed_days.to_f / total_days) * 100).round
   end
 
   def checkins_for_month(year, month)
