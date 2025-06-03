@@ -43,7 +43,8 @@ RUN apt-get update -qq && \
 # Set environment variables
 ENV RAILS_ENV=production \
     RAILS_MASTER_KEY=${RAILS_MASTER_KEY} \
-    RAILS_SERVE_STATIC_FILES=true
+    RAILS_SERVE_STATIC_FILES=true \
+    PATH="/usr/local/bundle/bin:$PATH"
 
 # Add a script to be executed every time the container starts
 COPY entrypoint.sh /usr/bin/
@@ -52,4 +53,4 @@ ENTRYPOINT ["entrypoint.sh"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 8080
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
