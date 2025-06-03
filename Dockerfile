@@ -40,21 +40,16 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libsqlite3-0 && \
     rm -rf /var/lib/apt/lists /usr/share/doc /usr/share/man
 
+# Set environment variables
+ENV RAILS_ENV=production \
+    RAILS_MASTER_KEY=${RAILS_MASTER_KEY} \
+    RAILS_SERVE_STATIC_FILES=true
+
+# Add a script to be executed every time the container starts
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 8080
 CMD ["rails", "server", "-b", "0.0.0.0"]
-
-# Set build arguments
-ARG RAILS_MASTER_KEY
-ARG SECRET_KEY_BASE_DUMMY=1
-
-# Set environment variables
-ENV RAILS_ENV=production
-ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
-ENV SECRET_KEY_BASE_DUMMY=${SECRET_KEY_BASE_DUMMY}
-ENV RAILS_SERVE_STATIC_FILES=true
-
-# Precompile assets
-RUN bundle exec rake assets:clobber
-RUN bundle exec rake assets:precompile
-RUN bundle exec rake assets:clean
