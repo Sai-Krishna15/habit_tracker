@@ -1,0 +1,21 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold text-gray-900">My Habits</h1>
+      <p class="mt-2 text-sm text-gray-700">Track and manage your daily habits to build a better routine.</p>
+    </div>
+    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+      <%= link_to 'New Habit', new_habit_path, class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
+    </div>
+  </div>
+
+  <%= turbo_frame_tag "habits_list" do %>
+    <% if @habits.any? %>
+      <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <%= render @habits %>
+      </div>
+    <% else %>
+      <%= render "empty_state" %>
+    <% end %>
+  <% end %>
+</div>
