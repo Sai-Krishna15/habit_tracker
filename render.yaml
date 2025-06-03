@@ -26,6 +26,23 @@ services:
           property: connectionString
     healthCheckPath: /up
     autoDeploy: true
+    buildFilter:
+      paths:
+        - package.json
+        - package-lock.json
+        - Gemfile
+        - Gemfile.lock
+        - config/**
+        - app/**
+        - bin/**
+        - lib/**
+        - public/**
+        - vendor/**
+        - Dockerfile
+        - render.yaml
+    buildCommand: |
+      echo "Building with RAILS_MASTER_KEY"
+      RAILS_MASTER_KEY=$RAILS_MASTER_KEY ./bin/render-build.sh
 
 databases:
   - name: habit-tracker-db
