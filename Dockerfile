@@ -27,9 +27,14 @@ COPY . .
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile --gemfile app/ lib/
 
+# Set environment variables for asset precompilation
+ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY} \
+    SECRET_KEY_BASE_DUMMY=1
+
 # Precompiling assets for production
-ARG RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 RAILS_MASTER_KEY=${RAILS_MASTER_KEY} bundle exec rake assets:precompile
+RUN bundle exec rake assets:clobber
+RUN bundle exec rake assets:precompile
+RUN bundle exec rake assets:clean
 
 # Final stage for app image
 FROM base
