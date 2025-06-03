@@ -18,6 +18,13 @@ if [ -z "${RAILS_ENV:-}" ]; then
   exit 1
 fi
 
+# Verify credentials
+echo "Verifying Rails credentials..."
+if [ ! -f "config/credentials.yml.enc" ]; then
+  echo "Error: config/credentials.yml.enc not found"
+  exit 1
+fi
+
 # Install dependencies
 echo "Installing dependencies..."
 bundle config set --local without 'development test'
@@ -31,6 +38,14 @@ rm -rf public/assets tmp/cache
 echo "Precompiling assets..."
 export SECRET_KEY_BASE_DUMMY=1
 export RAILS_SERVE_STATIC_FILES=true
+
+# Verify credentials can be decrypted
+echo "Verifying credentials decryption..."
+if ! bundle exec rails credentials:show > /dev/null 2>&1; then
+  echo "Error: Failed to decrypt credentials.yml.enc"
+  echo "Please verify that RAILS_MASTER_KEY is correct"
+  exit 1
+fi
 
 bundle exec rake assets:clobber
 bundle exec rake assets:precompile
