@@ -34,7 +34,7 @@ ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY} \
     RAILS_SERVE_STATIC_FILES=true
 
 # Precompiling assets for production
-RUN bundle exec rake assets:precompile
+RUN bundle exec rake assets:precompile --trace
 
 # Final stage for app image
 FROM base
