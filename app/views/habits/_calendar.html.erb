@@ -1,0 +1,73 @@
+<div class="mt-6">
+  <div class="flex items-center justify-between mb-4">
+    <h4 class="text-sm font-medium text-gray-900">Calendar</h4>
+    <div class="flex items-center space-x-4">
+      <% start_month = habit.created_at.to_date.beginning_of_month %>
+
+      <% if current_month > start_month %>
+        <%= link_to habits_path(month: current_month.prev_month.month, year: current_month.prev_month.year, habit_id: habit.id),
+            class: "p-2 rounded-full hover:bg-gray-100 transition-colors duration-200",
+            data: { turbo_frame: "calendar_#{habit.id}" },
+            format: :turbo_stream do %>
+          <svg class="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        <% end %>
+      <% end %>
+
+      <span class="text-sm font-medium text-gray-900 px-4 py-2 bg-gray-50 rounded-lg">
+        <%= current_month.strftime("%B %Y") %>
+      </span>
+
+      <% if current_month < Date.today.beginning_of_month %>
+        <%= link_to habits_path(month: current_month.next_month.month, year: current_month.next_month.year, habit_id: habit.id),
+            class: "p-2 rounded-full hover:bg-gray-100 transition-colors duration-200",
+            data: { turbo_frame: "calendar_#{habit.id}" },
+            format: :turbo_stream do %>
+          <svg class="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mt-2">
+    <div class="grid grid-cols-7 gap-1 mb-1">
+      <% %w[Sun Mon Tue Wed Thu Fri Sat].each do |day| %>
+        <div class="text-center text-xs font-medium text-gray-500"><%= day %></div>
+      <% end %>
+    </div>
+
+    <div class="grid grid-cols-7 gap-1">
+      <% start_date = current_month.beginning_of_month %>
+      <% end_date = current_month.end_of_month %>
+      <% checkins = habit.checkins_for_month(current_month.year, current_month.month) %>
+
+      <% # Fill in leading empty cells for the first week %>
+      <% start_date.wday.times do %>
+        <div class="aspect-square"></div>
+      <% end %>
+
+      <% (start_date..end_date).each do |date| %>
+        <% checkin = checkins.find { |c| c.date == date } %>
+        <div class="relative group">
+          <div class="<%= calendar_day_class(date, checkin, habit.created_at) %> rounded-lg aspect-square flex items-center justify-center">
+            <span class="text-xs <%= calendar_text_class(date, checkin) %>"><%= date.day %></span>
+          </div>
+          <% if date == Date.today %>
+            <div class="absolute inset-0 border-2 border-indigo-500 rounded-lg"></div>
+          <% end %>
+          <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+            <%= date.strftime("%B %d, %Y") %>
+            <% if checkin %>
+              <br>Completed
+            <% elsif date < Date.today && date >= habit.created_at.to_date %>
+              <br>Missed
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

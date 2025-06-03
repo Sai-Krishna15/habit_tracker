@@ -1,0 +1,9 @@
+<div class="mt-8 text-center">
+  <h3 class="mt-2 text-sm font-medium text-gray-900">No habits</h3>
+  <p class="mt-1 text-sm text-gray-500">Get started by creating a new habit.</p>
+  <div class="mt-6">
+    <%= link_to 'New Habit', new_habit_path,
+        class: "inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2",
+        data: { turbo_frame: "_top" } %>
+  </div>
+</div>

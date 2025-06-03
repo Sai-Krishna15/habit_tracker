@@ -1,0 +1,104 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="md:flex md:items-center md:justify-between">
+    <div class="min-w-0 flex-1">
+      <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"><%= @habit.name %></h2>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <%= link_to 'Edit', edit_habit_path(@habit), class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+      <%= button_to 'Delete', habit_path(@habit), method: :delete, class: "ml-3 inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600", form: { data: { turbo_confirm: 'Are you sure?' } } %>
+    </div>
+  </div>
+
+  <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <div class="lg:col-span-2">
+      <div class="bg-white shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">Description</h3>
+          <div class="mt-2 max-w-xl text-sm text-gray-500">
+            <p><%= @habit.description.presence || "No description provided." %></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-white shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">Progress</h3>
+          <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+            <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+              <dt class="truncate text-sm font-medium text-gray-500">Current Streak</dt>
+              <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= @habit.current_streak %> days</dd>
+            </div>
+            <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+              <dt class="truncate text-sm font-medium text-gray-500">Longest Streak</dt>
+              <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= @habit.longest_streak %> days</dd>
+            </div>
+            <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+              <dt class="truncate text-sm font-medium text-gray-500">Consistency</dt>
+              <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= @habit.consistency_percentage %>%</dd>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-white shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">This Month</h3>
+          <div class="mt-2 grid grid-cols-7 gap-1">
+            <% today = Date.today %>
+            <% start_date = today.beginning_of_month %>
+            <% end_date = today.end_of_month %>
+            <% checkins = @habit.checkins_for_month(today.year, today.month) %>
+
+            <% (start_date..end_date).each do |date| %>
+              <% checkin = checkins.find { |c| c.date == date } %>
+              <div class="relative">
+                <div class="<%= checkin ? 'bg-green-500' : 'bg-gray-100' %> rounded-lg aspect-square flex items-center justify-center">
+                  <span class="text-xs text-gray-600"><%= date.day %></span>
+                </div>
+                <% if date == today %>
+                  <div class="absolute inset-0 border-2 border-indigo-500 rounded-lg"></div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-1">
+      <div class="bg-white shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">Details</h3>
+          <dl class="mt-5 grid grid-cols-1 gap-5">
+            <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+              <dt class="truncate text-sm font-medium text-gray-500">Created</dt>
+              <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= @habit.created_at.strftime("%B %d, %Y") %></dd>
+            </div>
+            <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+              <dt class="truncate text-sm font-medium text-gray-500">Total Check-ins</dt>
+              <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= @habit.habit_checkins.count %></dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-white shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">Today's Status</h3>
+          <div class="mt-4">
+            <% today_checkin = @habit.habit_checkins.find_by(date: Date.today) %>
+            <% if today_checkin %>
+              <%= button_to habit_habit_checkin_path(@habit, today_checkin), method: :delete, class: "w-full bg-red-100 text-red-700 hover:bg-red-200 px-4 py-2 rounded-md text-sm font-medium" do %>
+                Mark as Incomplete
+              <% end %>
+            <% else %>
+              <%= button_to habit_habit_checkins_path(@habit), class: "w-full bg-green-100 text-green-700 hover:bg-green-200 px-4 py-2 rounded-md text-sm font-medium" do %>
+                Mark as Complete
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

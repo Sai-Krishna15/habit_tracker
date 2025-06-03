@@ -1,0 +1,14 @@
+<div class="mt-4 grid grid-cols-3 gap-4">
+  <div class="bg-gray-50 rounded-lg p-3 text-center">
+    <dt class="text-sm font-medium text-gray-500">Current Streak</dt>
+    <dd class="mt-1 text-2xl font-semibold text-gray-900"><%= habit.current_streak %></dd>
+  </div>
+  <div class="bg-gray-50 rounded-lg p-3 text-center">
+    <dt class="text-sm font-medium text-gray-500">Longest Streak</dt>
+    <dd class="mt-1 text-2xl font-semibold text-gray-900"><%= habit.longest_streak %></dd>
+  </div>
+  <div class="bg-gray-50 rounded-lg p-3 text-center">
+    <dt class="text-sm font-medium text-gray-500">Consistency</dt>
+    <dd class="mt-1 text-2xl font-semibold text-gray-900"><%= habit.consistency_percentage %>%</dd>
+  </div>
+</div>

@@ -39,9 +39,20 @@ class Habit < ApplicationRecord
   def consistency_percentage
     return 0 if habit_checkins.empty?
 
+    # Calculate total days since habit creation (including today)
     total_days = (Date.today - created_at.to_date).to_i + 1
+
+    # Get the count of days where the habit was completed
     completed_days = habit_checkins.count
 
+    # Calculate percentage: (completed days / total days) * 100
+    # Round to 1 decimal place for cleaner display
     ((completed_days.to_f / total_days) * 100).round(1)
+  end
+
+  def checkins_for_month(year, month)
+    start_date = Date.new(year, month, 1)
+    end_date = start_date.end_of_month
+    habit_checkins.where(date: start_date..end_date)
   end
 end
