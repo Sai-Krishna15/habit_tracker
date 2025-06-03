@@ -2,7 +2,9 @@ services:
   - type: web
     name: habit-tracker
     env: ruby
-    buildCommand: "./bin/render-build.sh"
+    buildCommand: |
+      echo "Building with RAILS_MASTER_KEY"
+      RAILS_MASTER_KEY=$RAILS_MASTER_KEY ./bin/render-build.sh
     startCommand: "bundle exec puma -C config/puma.rb"
     envVars:
       - key: RAILS_MASTER_KEY
@@ -40,9 +42,6 @@ services:
         - vendor/**
         - Dockerfile
         - render.yaml
-    buildCommand: |
-      echo "Building with RAILS_MASTER_KEY"
-      RAILS_MASTER_KEY=$RAILS_MASTER_KEY ./bin/render-build.sh
 
 databases:
   - name: habit-tracker-db
