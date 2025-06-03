@@ -31,10 +31,11 @@ RUN bundle exec bootsnap precompile --gemfile app/ lib/
 ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY} \
     SECRET_KEY_BASE_DUMMY=1 \
     RAILS_ENV=production \
-    RAILS_SERVE_STATIC_FILES=true
+    RAILS_SERVE_STATIC_FILES=true \
+    RAILS_LOG_TO_STDOUT=true
 
 # Precompiling assets for production
-RUN bundle exec rake assets:precompile --trace
+RUN bundle exec rails assets:precompile
 
 # Final stage for app image
 FROM base
