@@ -28,16 +28,15 @@ COPY . .
 RUN bundle exec bootsnap precompile --gemfile app/ lib/
 
 # Set environment variables for asset precompilation
-ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY} \
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY \
     SECRET_KEY_BASE_DUMMY=1 \
     RAILS_ENV=production \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_LOG_TO_STDOUT=true
 
-ARG RAILS_MASTER_KEY
-ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
-
-RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rake assets:precompile
+# Precompiling assets for production
+RUN bundle exec rake assets:precompile
 
 # Final stage for app image
 FROM base
