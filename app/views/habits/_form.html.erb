@@ -7,6 +7,9 @@
       <%= form.text_field :name, required: true,
           class: "appearance-none block w-full px-3 py-2 border #{habit.errors[:name].any? ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
           placeholder: "e.g., Morning Exercise" %>
+      <% if habit.errors[:name].any? %>
+        <p class="mt-2 text-sm text-red-600"><%= habit.errors[:name].join(", ") %></p>
+      <% end %>
     </div>
   </div>
 
@@ -18,6 +21,9 @@
       <%= form.text_area :description, required: true, rows: 3,
           class: "appearance-none block w-full px-3 py-2 border #{habit.errors[:description].any? ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
           placeholder: "Describe your habit and why it's important to you" %>
+      <% if habit.errors[:description].any? %>
+        <p class="mt-2 text-sm text-red-600"><%= habit.errors[:description].join(", ") %></p>
+      <% end %>
     </div>
   </div>
 
