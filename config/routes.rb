@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
+  # Health check endpoint
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")

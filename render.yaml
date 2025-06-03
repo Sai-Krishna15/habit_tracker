@@ -24,6 +24,8 @@ services:
           type: redis
           name: habit-tracker-redis
           property: connectionString
+    healthCheckPath: /up
+    autoDeploy: true
 
 databases:
   - name: habit-tracker-db
@@ -35,3 +37,4 @@ services:
   - type: redis
     name: habit-tracker-redis
     plan: free
+    maxmemoryPolicy: noeviction
