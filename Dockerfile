@@ -29,9 +29,12 @@ RUN bundle exec bootsnap precompile --gemfile app/ lib/
 
 # Set dummy secret key base for asset precompilation
 ENV SECRET_KEY_BASE_DUMMY=1
+ENV RAILS_ENV=production
+ENV RAILS_SERVE_STATIC_FILES=true
 
 # Precompiling assets for production
-RUN bundle exec rake assets:precompile
+RUN bundle exec rake assets:clobber && \
+    bundle exec rake assets:precompile
 
 # Final stage for app image
 FROM base
