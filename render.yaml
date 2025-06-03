@@ -5,6 +5,7 @@ services:
     buildCommand: |
       chmod +x ./bin/render-build.sh
       export RAILS_ENV=production
+      export RAILS_MASTER_KEY=$RAILS_MASTER_KEY
       docker build -t habit-tracker .
       ./bin/render-build.sh
     startCommand: "bundle exec puma -C config/puma.rb"

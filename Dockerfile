@@ -29,7 +29,9 @@ RUN bundle exec bootsnap precompile --gemfile app/ lib/
 
 # Set environment variables for asset precompilation
 ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY} \
-    SECRET_KEY_BASE_DUMMY=1
+    SECRET_KEY_BASE_DUMMY=1 \
+    RAILS_ENV=production \
+    RAILS_SERVE_STATIC_FILES=true
 
 # Precompiling assets for production
 RUN bundle exec rake assets:clobber
