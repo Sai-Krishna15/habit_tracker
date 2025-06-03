@@ -34,7 +34,7 @@ gem "tailwindcss-rails", "~> 3.3.1"
 
 # Background Jobs
 gem "sidekiq"
-gem "redis"
+gem "redis", "~> 5.0", ">= 5.0.1"
 gem "sidekiq-scheduler"
 
 # Email
