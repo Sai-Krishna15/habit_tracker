@@ -98,4 +98,9 @@ Rails.application.configure do
     authentication: 'plain',
     enable_starttls_auto: true
   }
+
+  # Asset configuration
+  config.assets.digest = true
+  config.assets.version = '1.0'
+  config.assets.initialize_on_precompile = false
 end

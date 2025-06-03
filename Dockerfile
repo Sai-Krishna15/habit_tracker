@@ -27,8 +27,11 @@ COPY . .
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile --gemfile app/ lib/
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
+# Set dummy secret key base for asset precompilation
+ENV SECRET_KEY_BASE_DUMMY=1
+
+# Precompiling assets for production
+RUN bundle exec rake assets:precompile
 
 # Final stage for app image
 FROM base
