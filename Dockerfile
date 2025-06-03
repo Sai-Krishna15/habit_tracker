@@ -29,7 +29,8 @@ RUN bundle exec bootsnap precompile --gemfile app/ lib/
 
 # Precompiling assets for production
 ARG RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 RAILS_MASTER_KEY=${RAILS_MASTER_KEY} bundle exec rake assets:precompile
+ARG SECRET_KEY_BASE_DUMMY=1
+RUN SECRET_KEY_BASE_DUMMY=${SECRET_KEY_BASE_DUMMY} RAILS_MASTER_KEY=${RAILS_MASTER_KEY} bundle exec rake assets:precompile
 
 # Final stage for app image
 FROM base
@@ -42,3 +43,18 @@ RUN apt-get update -qq && \
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 8080
 CMD ["rails", "server", "-b", "0.0.0.0"]
+
+# Set build arguments
+ARG RAILS_MASTER_KEY
+ARG SECRET_KEY_BASE_DUMMY=1
+
+# Set environment variables
+ENV RAILS_ENV=production
+ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+ENV SECRET_KEY_BASE_DUMMY=${SECRET_KEY_BASE_DUMMY}
+ENV RAILS_SERVE_STATIC_FILES=true
+
+# Precompile assets
+RUN bundle exec rake assets:clobber
+RUN bundle exec rake assets:precompile
+RUN bundle exec rake assets:clean
