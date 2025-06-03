@@ -34,8 +34,10 @@ ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY} \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_LOG_TO_STDOUT=true
 
-# Precompiling assets for production
-RUN bundle exec rails assets:precompile
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rake assets:precompile
 
 # Final stage for app image
 FROM base
