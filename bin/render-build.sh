@@ -6,24 +6,31 @@ set -o nounset
 
 echo "Starting build process..."
 
-# Install dependencies
-echo "Installing dependencies..."
-bundle install
-
-# Clean up any existing assets
-echo "Cleaning up existing assets..."
-rm -rf public/assets
-
-# Precompile assets
-echo "Precompiling assets..."
-export SECRET_KEY_BASE_DUMMY=1
-export RAILS_ENV=production
-export RAILS_SERVE_STATIC_FILES=true
-
+# Verify environment
+echo "Verifying environment..."
 if [ -z "${RAILS_MASTER_KEY:-}" ]; then
   echo "Error: RAILS_MASTER_KEY is not set"
   exit 1
 fi
+
+if [ -z "${RAILS_ENV:-}" ]; then
+  echo "Error: RAILS_ENV is not set"
+  exit 1
+fi
+
+# Install dependencies
+echo "Installing dependencies..."
+bundle config set --local without 'development test'
+bundle install --jobs 4 --retry 3
+
+# Clean up any existing assets
+echo "Cleaning up existing assets..."
+rm -rf public/assets tmp/cache
+
+# Precompile assets
+echo "Precompiling assets..."
+export SECRET_KEY_BASE_DUMMY=1
+export RAILS_SERVE_STATIC_FILES=true
 
 bundle exec rake assets:clobber
 bundle exec rake assets:precompile
