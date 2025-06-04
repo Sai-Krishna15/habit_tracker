@@ -8,20 +8,28 @@
 
       <div class="rounded-md shadow-sm -space-y-px">
         <div>
-          <%= f.label :name, class: "sr-only" %>
-          <%= f.text_field :name, autofocus: true, autocomplete: "name", required: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Full name" %>
+        <%= f.label :name, class: "block text-sm font-medium text-gray-700" do %>
+          Name <span class="text-red-500">*</span>
+        <% end %>
+          <%= f.text_field :name, autofocus: true, autocomplete: "name", required: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm mb-5", placeholder: "Full name" %>
         </div>
         <div>
-          <%= f.label :email, class: "sr-only" %>
-          <%= f.email_field :email, autocomplete: "email", required: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Email address" %>
+        <%= f.label :email, class: "block text-sm font-medium text-gray-700" do %>
+          Email <span class="text-red-500">*</span>
+        <% end %>
+          <%= f.email_field :email, autocomplete: "email", required: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm mb-5", placeholder: "Email address" %>
         </div>
         <div>
-          <%= f.label :password, class: "sr-only" %>
-          <%= f.password_field :password, autocomplete: "new-password", required: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Password" %>
+        <%= f.label :password, class: "block text-sm font-medium text-gray-700" do %>
+          Password <span class="text-red-500">*</span>
+        <% end %>
+          <%= f.password_field :password, autocomplete: "new-password", required: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm mb-5", placeholder: "Password" %>
         </div>
         <div>
-          <%= f.label :password_confirmation, class: "sr-only" %>
-          <%= f.password_field :password_confirmation, autocomplete: "new-password", required: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Confirm password" %>
+        <%= f.label :password_confirmation, class: "block text-sm font-medium text-gray-700" do %>
+          Confirm Password <span class="text-red-500">*</span>
+        <% end %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", required: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm mb-5", placeholder: "Confirm password" %>
         </div>
       </div>
 
